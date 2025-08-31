@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
-  
+
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
@@ -71,7 +71,7 @@ export default function LoginPage() {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200"
           >
-            Login
+            sign in
           </button>
         </form>
 
