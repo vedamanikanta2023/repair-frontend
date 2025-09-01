@@ -20,11 +20,18 @@ const handler = NextAuth({
           }),
         });
 
-        const user = await res.json();
+          const data = await res.json();
+          console.log("start",res,"end")
+       if (!res.ok) {
+            throw new Error(data.message || "Invalid credentials");
+          }
 
-        if (res.ok && user) {
-          return user; // must return an object
-        }
+          // must return a plain object for session
+          return {
+            id: data.user.id,
+            username: data.user.username,
+            email: data.user.email,
+          };
         return null;
       },
     }),
