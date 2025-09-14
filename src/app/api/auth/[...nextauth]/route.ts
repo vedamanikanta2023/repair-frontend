@@ -10,7 +10,7 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // Example: Call your backend API for authentication
+        // calling the backend API for login
         const res = await fetch("http://localhost:5000/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -20,19 +20,16 @@ const handler = NextAuth({
           }),
         });
 
-          const data = await res.json();
-          console.log("start",res,"end")
-       if (!res.ok) {
-            throw new Error(data.message || "Invalid credentials");
-          }
+        const data = await res.json();
 
-          // must return a plain object for session
-          return {
-            id: data.user.id,
-            username: data.user.username,
-            email: data.user.email,
-          };
-        return null;
+        if (!res.ok) {
+          throw new Error(data.message || "Invalid credentials");
+        }
+
+        // Must return a plain object for session 
+        return {
+          ...data.user//this is not good practice we need to explicitly pick keys and values
+        };
       },
     }),
   ],
@@ -43,6 +40,32 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET, // add in .env.local
+
+  callbacks: {
+    // 1. Add token to JWT
+    async jwt(data) {
+      const { token, user }=data;
+      
+      if (user) {
+        token.accessToken = user.token; // store backend JWT
+        token.id = user.id;
+        token.username = user.username;
+      }
+      return token;
+    },
+
+    // 2. Make token available in session
+    async session(data) {
+      const { session, token } = data
+
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.username = token.username;
+      }
+      session.accessToken = token.accessToken; // 👈 available in frontend
+      return session;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };
