@@ -1,8 +1,11 @@
 "use client";
 
+import { Test } from "@/app/components/test";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { createContext, useEffect } from "react";
+
+export const UserContext: any = createContext(null);
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -17,15 +20,18 @@ export default function Dashboard() {
   if (status === "loading") return <p>Loading...</p>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
-      {/* <p className="mt-2">Welcome, {session?.user?.username} 🎉</p> */}
-      <button
-        onClick={() => signOut({ callbackUrl: "/login" })}
-        className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg"
-      >
-        Logout
-      </button>
-    </div>
+    <UserContext.Provider value={session}>
+      <div className="p-6">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        {/* <p className="mt-2">Welcome, {session?.user?.username} 🎉</p> */}
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg"
+        >
+          Logout
+        </button>
+        <button>Do Request</button>
+      </div>
+    </UserContext.Provider>
   );
 }
