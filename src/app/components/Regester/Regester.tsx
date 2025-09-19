@@ -113,7 +113,7 @@ export const Regester: React.FC = () => {
       <div className="mb-4">
         <label className="block text-gray-700 mb-2">Email</label>
         <input
-          type="email"
+          // type="email"
           name="email"
           value={state.email}
           onChange={handleChange}
