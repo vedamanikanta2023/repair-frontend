@@ -1,6 +1,5 @@
 "use client";
 
-import { Test } from "@/app/components/test";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect } from "react";
