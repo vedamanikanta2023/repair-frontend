@@ -6,6 +6,8 @@ export default function UserDetails (){
         <input />
         <h1>age</h1>
         <input type="number" />
+        <h1>dob</h1>
+        <input type="date" />
         <input type="submit"/>
     </form>
 
