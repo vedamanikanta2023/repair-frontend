@@ -22,7 +22,6 @@ export default function RootLayout({
     <div>
       <div className="flex justify-end items-center">
         <UserDetails />
-
         <Profile/>
       </div>
       {children}
