@@ -2,15 +2,8 @@
 import * as React from "react";
 import Image from "next/image";
 import { capitalizeFirstLetter } from "@/utils/utils";
+import { UserDetailsType } from "@/types";
 
-interface UserDetailsType {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-  createdAt: string;
-  updatedAt: string;
-}
 export function ProfileUI(props: { userDetails: UserDetailsType }) {
   const [showUserDetails, setUserDetails] = React.useState(false);
   const { userDetails } = props;
