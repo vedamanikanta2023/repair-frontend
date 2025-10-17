@@ -5,8 +5,8 @@ import { capitalizeFirstLetter } from "@/utils/utils";
 import { UserDetailsType } from "@/types";
 
 export function ProfileUI(props: { userDetails: UserDetailsType }) {
-  const [showUserDetails, setUserDetails] = React.useState(false);
   const { userDetails } = props;
+  const [showUserDetails, setUserDetails] = React.useState(false);
 
   return (
     <>
@@ -21,7 +21,7 @@ export function ProfileUI(props: { userDetails: UserDetailsType }) {
           className="object-cover w-full h-full"
         />
       </div>
-      {showUserDetails&& userDetails && (
+      {showUserDetails && userDetails && (
         <div className="flex flex-col items-start justify-center rounded-lg p-2 gap-1 text-stone-50 bg-stone-500 fixed right-6 top-20">
           <p className="text-sm font-medium text-stone-50  tracking-wide">
             {capitalizeFirstLetter(userDetails.role)}
