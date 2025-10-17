@@ -22,7 +22,7 @@ export default function RootLayout({
     <div>
       <div className="flex justify-end items-center" >
         <UserDetails />
-        <Image src="/profile.jpg" className="rounded-full" width={30} height={30} alt="" />
+        <Image src="/profile.jpg" className="rounded-full" width={30} height={30} alt="profile pic" />
       </div>
       {children}
     </div>
