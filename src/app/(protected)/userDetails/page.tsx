@@ -1,60 +1,71 @@
 "use client";
-import { useReducer, useState } from "react";
+import { ChangeEvent, useReducer, useState } from "react";
 
-const intialState = {
-    name: "",
-    age: "",
-    phonenumber: "",
-    gender: "",
-    address: "",
-  };
-function reducer(state:any, action:any) {
-}
+const inputChange = "INPUT CHANGE";
+
+const initialState = {
+  name: "",
+  age: "",
+  phonenumber: "",
+  gender: "",
+  address: "",
+};
+
+const reducer = (
+  state: typeof initialState,
+  action: { type: string; payload: { key: string; value: string } }
+) => {
+  switch (action.type) {
+    case "RESET":
+      return initialState;
+    case inputChange:
+      return { ...state, [action.payload.key]: action.payload.value };
+    default:
+      return initialState;
+  }
+};
 export default function UserDetails() {
- const [data,useDispatch]= useReducer(reducer,intialState);
+  const [userDetails, useDispatch] = useReducer(reducer, initialState);
+
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    useDispatch({
+      type: inputChange,
+      payload: { key: e.target.name, value: e.target.value },
+    });
+  };
 
   return (
-    <form
-      onSubmit={()=>{}}
-      style={{
-        maxWidth: "400px",
-        margin: "20px auto",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-      }}
-    >
+    <form className="mt-16" onSubmit={() => {}}>
       <label>
         Name:
-        <input
-          type="text"
-          name="username"
-        />
+        <input name="name" value={userDetails.name} onChange={handleOnChange} />
       </label>
       <label>
         Age:
-        <input
-        />
+        <input name="age" value={userDetails.age} onChange={handleOnChange} />
       </label>
       <label>
         Phone:
         <input
-          type="number"
-          name="age"
+          name="phonenumber"
+          value={userDetails.phonenumber}
+          onChange={handleOnChange}
         />
       </label>
       <label>
         Gender:
         <input
-          type="date"
-          name="dob"
+          name="gender"
+          value={userDetails.gender}
+          onChange={handleOnChange}
         />
       </label>
       <label>
         Address:
         <input
-          type="date"
-          name="dob"
+          name="address"
+          value={userDetails.address}
+          onChange={handleOnChange}
         />
       </label>
       <button type="submit">Submit</button>
