@@ -1,7 +1,8 @@
 "use client";
-import { ChangeEvent, useReducer, useState } from "react";
+import { ChangeEvent, useEffect, useReducer, useRef, useState } from "react";
 
-const inputChange = "INPUT CHANGE";
+const INPUT_CHANGE = "INPUT_CHANGE";
+const RESET = "RESET";
 
 const initialState = {
   name: "",
@@ -13,114 +14,179 @@ const initialState = {
 
 const reducer = (
   state: typeof initialState,
-  action: { type: string; payload: { key: string; value: string } }
+  action: { type: string; payload?: { key: string; value: string } }
 ) => {
   switch (action.type) {
-    case "RESET":
+    case RESET:
       return initialState;
-    case inputChange:
-      return { ...state, [action.payload.key]: action.payload.value };
+    case INPUT_CHANGE:
+      if (action.payload) {
+        return { ...state, [action.payload.key]: action.payload.value };
+      }
+      return state;
     default:
-      return initialState;
+      return state;
   }
 };
 
 export function UserDetailsUI() {
-  const [userDetails, useDispatch] = useReducer(reducer, initialState);
+  const [userDetails, dispatch] = useReducer(reducer, initialState);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement| HTMLSelectElement>) => {
-    useDispatch({
-      type: inputChange,
+  const handleOnChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    dispatch({
+      type: INPUT_CHANGE,
       payload: { key: e.target.name, value: e.target.value },
     });
   };
 
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!userDetails.name.trim()) newErrors.name = "Name is required";
+    if (!userDetails.age || Number(userDetails.age) <= 0)
+      newErrors.age = "Enter a valid age";
+    if (!/^[0-9]{10}$/.test(userDetails.phonenumber))
+      newErrors.phonenumber = "Enter a valid 10-digit phone number";
+    if (!userDetails.gender) newErrors.gender = "Select your gender";
+    if (!userDetails.address.trim()) newErrors.address = "Address is required";
+
+    return newErrors;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+
+    const formErrors = validateForm();
+    setErrors(formErrors);
+
+    if (Object.keys(formErrors).length === 0) {
+      alert("Form submitted successfully!");
+      dispatch({ type: RESET });
+      setIsSubmitted(false);
+    }
+  };
+
   return (
     <form
-  onSubmit={() => {}}
-  className="mt-16 w-full max-w-md mx-auto flex flex-col gap-4 p-6 bg-white rounded-xl shadow-md"
->
-  {/* Name */}
-  <label htmlFor="name" className="flex flex-col text-sm font-medium text-gray-700">
-    Name:
-    <input
-      id="name"
-      name="name"
-      value={userDetails.name}
-      onChange={handleOnChange}
-      className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      placeholder="Enter your name"
-    />
-  </label>
+      onSubmit={handleSubmit}
+      className="mt-16 w-full max-w-md mx-auto flex flex-col gap-4 p-6 bg-white rounded-xl shadow-md"
+    >
+      {/* Name */}
+      <label
+        htmlFor="name"
+        className="flex flex-col text-sm font-medium text-gray-700"
+      >
+        Name:
+        <input
+          id="name"
+          name="name"
+          value={userDetails.name}
+          onChange={handleOnChange}
+          className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your name"
+        />
+        {isSubmitted && errors.name && (
+          <span className="text-red-600 text-xs mt-1">{errors.name}</span>
+        )}
+      </label>
 
-  {/* Age */}
-  <label htmlFor="age" className="flex flex-col text-sm font-medium text-gray-700">
-    Age:
-    <input
-      id="age"
-      name="age"
-      type="number"
-      value={userDetails.age}
-      onChange={handleOnChange}
-      className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      placeholder="Enter your age"
-    />
-  </label>
+      {/* Age */}
+      <label
+        htmlFor="age"
+        className="flex flex-col text-sm font-medium text-gray-700"
+      >
+        Age:
+        <input
+          id="age"
+          name="age"
+          type="number"
+          value={userDetails.age}
+          onChange={handleOnChange}
+          className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your age"
+        />
+        {isSubmitted && errors.age && (
+          <span className="text-red-600 text-xs mt-1">{errors.age}</span>
+        )}
+      </label>
 
-  {/* Phone */}
-  <label
-    htmlFor="phonenumber"
-    className="flex flex-col text-sm font-medium text-gray-700"
-  >
-    Phone:
-    <input
-      id="phonenumber"
-      name="phonenumber"
-      type="tel"
-      value={userDetails.phonenumber}
-      onChange={handleOnChange}
-      className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      placeholder="Enter your phone number"
-    />
-  </label>
+      {/* Phone */}
+      <label
+        htmlFor="phonenumber"
+        className="flex flex-col text-sm font-medium text-gray-700"
+      >
+        Phone:
+        <input
+          id="phonenumber"
+          name="phonenumber"
+          type="tel"
+          value={userDetails.phonenumber}
+          onChange={handleOnChange}
+          className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your phone number"
+        />
+        {isSubmitted && errors.phonenumber && (
+          <span className="text-red-600 text-xs mt-1">
+            {errors.phonenumber}
+          </span>
+        )}
+      </label>
 
-  <label htmlFor="gender" className="flex flex-col text-sm font-medium text-gray-700">
-  Gender:
-  <select
-    id="gender"
-    name="gender"
-    value={userDetails.gender}
-    onChange={handleOnChange}
-    className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-  >
-    <option value="" disabled>
-      Select your gender
-    </option>
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-  </select>
-</label>
+      {/* Gender */}
+      <label
+        htmlFor="gender"
+        className="flex flex-col text-sm font-medium text-gray-700"
+      >
+        Gender:
+        <select
+          id="gender"
+          name="gender"
+          value={userDetails.gender}
+          onChange={handleOnChange}
+          className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        >
+          <option value="" disabled>
+            Select your gender
+          </option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        {isSubmitted && errors.gender && (
+          <span className="text-red-600 text-xs mt-1">{errors.gender}</span>
+        )}
+      </label>
 
-  {/* Address */}
-  <label htmlFor="address" className="flex flex-col text-sm font-medium text-gray-700">
-    Address:
-    <input
-      id="address"
-      name="address"
-      value={userDetails.address}
-      onChange={handleOnChange}
-      className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      placeholder="Enter your address"
-    />
-  </label>
+      {/* Address */}
+      <label
+        htmlFor="address"
+        className="flex flex-col text-sm font-medium text-gray-700"
+      >
+        Address:
+        <input
+          id="address"
+          name="address"
+          value={userDetails.address}
+          onChange={handleOnChange}
+          className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your address"
+        />
+        {isSubmitted && errors.address && (
+          <span className="text-red-600 text-xs mt-1">{errors.address}</span>
+        )}
+      </label>
 
-  {/* Submit Button */}
-  <button
-    type="submit"
-    className="mt-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-  >
-    Submit
-  </button>
-</form>
+      {/* Submit */}
+      <button
+        type="submit"
+        className="mt-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+      >
+        Submit
+      </button>
+    </form>
   );
 }
