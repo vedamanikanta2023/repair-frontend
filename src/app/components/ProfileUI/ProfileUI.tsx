@@ -4,6 +4,8 @@ import Image from "next/image";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import { UserDetailsType } from "@/types";
 
+const url = "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
+
 export function ProfileUI(props: { userDetails: UserDetailsType }) {
   const { userDetails } = props;
   const [showUserDetails, setUserDetails] = React.useState(false);
@@ -14,7 +16,7 @@ export function ProfileUI(props: { userDetails: UserDetailsType }) {
         <Image
           onMouseOver={() => setUserDetails(true)}
           onMouseLeave={() => setUserDetails(false)}
-          src="/profile.jpg"
+          src={url}
           alt="User Profile Picture"
           width={64}
           height={64}
