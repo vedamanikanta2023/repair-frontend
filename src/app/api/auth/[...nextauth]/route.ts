@@ -11,7 +11,7 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         // calling the backend API for login
-        const res = await fetch("http://localhost:5000/login", {
+        const res = await fetch(`${process.env.DOMAIN}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
