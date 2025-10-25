@@ -1,15 +1,20 @@
 "use client"
+import { UserCard } from "@/app/components/UserCard";
 import { UserDetailsUI } from "@/app/components/UserDetailsUI";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function UserDetails() {
   const { data: session, status } = useSession();
-  console.log(session);
-  const fetchUserDetails = async (id: string) => {
-    try {
+  const [userDetails,setUserDetails]=useState(null);
+console.log(userDetails)
+    const userId = session?.user.id || "";
+
+    const fetchUserDetails = async (id: string) => {
+
+        try {
       const response = await fetch(
-        `${process.env.DOMAIN}/userdetails/${id}`,
+        `http://10.80.221.14:5000/userdetails/${id}`,
         { cache: "no-store" } // optional, ensures fresh data
       );
 
@@ -27,7 +32,7 @@ export default function UserDetails() {
         console.warn("User details are empty");
         return;
       }
-
+      setUserDetails(data);
       return data;
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -35,8 +40,8 @@ export default function UserDetails() {
   };
 
   useEffect(() => {
-    fetchUserDetails("");
-  }, []);
+   if(userId){ fetchUserDetails(userId);}
+  }, [userId]);
 
-  return <UserDetailsUI />;
+  return !!userDetails?<UserCard user={userDetails} />: <UserDetailsUI />;
 }
