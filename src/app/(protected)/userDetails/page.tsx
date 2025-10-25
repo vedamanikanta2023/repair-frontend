@@ -43,5 +43,5 @@ console.log(userDetails)
    if(userId){ fetchUserDetails(userId);}
   }, [userId]);
 
-  return !!userDetails?<UserCard user={userDetails} />: <UserDetailsUI />;
+  return !!userDetails? <UserCard user={userDetails} />: <UserDetailsUI user={userDetails} />;
 }
