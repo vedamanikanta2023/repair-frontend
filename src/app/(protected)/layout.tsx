@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
-import UserDetails from "./userDetails/page";
 import { Profile } from "../components/Profile";
 // import { SessionProvider } from "next-auth/react";
 

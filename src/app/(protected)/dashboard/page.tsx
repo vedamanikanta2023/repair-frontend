@@ -23,7 +23,7 @@ export default function Dashboard() {
       if (!response.ok) {
         // if API sends 404 or any non-200
         console.warn(`User not found, status: ${response.status}`);
-        router.push("/userDetails");
+        router.push("/userdetails");
         return;
       }
 
@@ -32,14 +32,14 @@ export default function Dashboard() {
       if (!data || Object.keys(data).length === 0) {
         // handles case when response is empty
         console.warn("User details are empty");
-        router.push("/userDetails");
+        router.push("/userdetails");
         return;
       }
 
       return data;
     } catch (error) {
       console.error("Error fetching user details:", error);
-      router.push("/userDetails");
+      router.push("/userdetails");
     }
   };
 
