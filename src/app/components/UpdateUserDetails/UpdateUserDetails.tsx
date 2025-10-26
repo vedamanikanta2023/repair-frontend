@@ -1,13 +1,16 @@
 "use client";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useReducer, useRef, useState } from "react";
 
 const INPUT_CHANGE = "INPUT_CHANGE";
 const RESET = "RESET";
+const EDIT = "EDIT";
 
 const initialState = {
   name: "",
   age: "",
-  phonenumber: "",
+  phoneNumber: "",
   gender: "",
   address: "",
 };
@@ -24,7 +27,7 @@ const reducer = (
         return { ...state, [action.payload.key]: action.payload.value };
       }
       return state;
-    case "EDIT":
+    case EDIT:
       return { ...action.payload };
     default:
       return state;
@@ -35,6 +38,14 @@ export const UpdateUserDetails: React.FC = () => {
   const [userDetails, dispatch] = useReducer(reducer, initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const { data: session, status } = useSession();
+
+  const userId = session?.user.id || "";
+
+  const searchParams = useSearchParams();
+  const isEdit = searchParams.get("edit");
+  console.log("ljkasf", isEdit);
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -51,8 +62,8 @@ export const UpdateUserDetails: React.FC = () => {
     if (!userDetails.name.trim()) newErrors.name = "Name is required";
     if (!userDetails.age || Number(userDetails.age) <= 0)
       newErrors.age = "Enter a valid age";
-    if (!/^[0-9]{10}$/.test(userDetails.phonenumber))
-      newErrors.phonenumber = "Enter a valid 10-digit phone number";
+    if (!/^[0-9]{10}$/.test(userDetails.phoneNumber))
+      newErrors.phoneNumber = "Enter a valid 10-digit phone number";
     if (!userDetails.gender) newErrors.gender = "Select your gender";
     if (!userDetails.address.trim()) newErrors.address = "Address is required";
 
@@ -72,6 +83,41 @@ export const UpdateUserDetails: React.FC = () => {
       setIsSubmitted(false);
     }
   };
+
+  const fetchUserDetails = async (id: string) => {
+    try {
+      const response = await fetch(
+        `http://10.80.221.14:5000/userdetails/${id}`,
+        { cache: "no-store" } // optional, ensures fresh data
+      );
+
+      if (!response.ok) {
+        // if API sends 404 or any non-200
+        console.warn(`User not found, status: ${response.status}`);
+        // router.push("/userDetails");
+        return;
+      }
+
+      const data = await response.json();
+
+      if (!data || Object.keys(data).length === 0) {
+        // handles case when response is empty
+        console.warn("User details are empty");
+        return;
+      }
+
+      dispatch({ type: EDIT, payload: data });
+      return data;
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      fetchUserDetails(userId);
+    }
+  }, [userId]);
 
   return (
     <form
@@ -119,22 +165,22 @@ export const UpdateUserDetails: React.FC = () => {
 
       {/* Phone */}
       <label
-        htmlFor="phonenumber"
+        htmlFor="phoneNumber"
         className="flex flex-col text-sm font-medium text-gray-700"
       >
         Phone:
         <input
-          id="phonenumber"
-          name="phonenumber"
+          id="phoneNumber"
+          name="phoneNumber"
           type="tel"
-          value={userDetails.phonenumber}
+          value={userDetails.phoneNumber}
           onChange={handleOnChange}
           className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Enter your phone number"
         />
-        {isSubmitted && errors.phonenumber && (
+        {isSubmitted && errors.phoneNumber && (
           <span className="text-red-600 text-xs mt-1">
-            {errors.phonenumber}
+            {errors.phoneNumber}
           </span>
         )}
       </label>

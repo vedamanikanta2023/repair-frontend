@@ -39,7 +39,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user}) => {
   };
   
   const editUserDetails=()=>{
-    router.push("/updateuserdetails")
+    router.push("/updateuserdetails?edit=true")
   }
 
   return (
