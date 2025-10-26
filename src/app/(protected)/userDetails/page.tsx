@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { UserCard } from "@/app/components/UserCard";
 import { UserDetailsUI } from "@/app/components/UserDetailsUI";
 import { useSession } from "next-auth/react";
@@ -6,13 +6,12 @@ import { useEffect, useState } from "react";
 
 export default function UserDetails() {
   const { data: session, status } = useSession();
-  const [userDetails,setUserDetails]=useState(null);
-console.log(userDetails)
-    const userId = session?.user.id || "";
+  const [userDetails, setUserDetails] = useState(null);
 
-    const fetchUserDetails = async (id: string) => {
+  const userId = session?.user.id || "";
 
-        try {
+  const fetchUserDetails = async (id: string) => {
+    try {
       const response = await fetch(
         `http://10.80.221.14:5000/userdetails/${id}`,
         { cache: "no-store" } // optional, ensures fresh data
@@ -40,8 +39,14 @@ console.log(userDetails)
   };
 
   useEffect(() => {
-   if(userId){ fetchUserDetails(userId);}
+    if (userId) {
+      fetchUserDetails(userId);
+    }
   }, [userId]);
 
-  return !!userDetails? <UserCard user={userDetails} />: <UserDetailsUI user={userDetails} />;
+  return !!userDetails ? (
+    <UserCard user={userDetails} />
+  ) : (
+    <UserDetailsUI user={userDetails} />
+  );
 }
