@@ -1,6 +1,5 @@
 "use client";
 import { UserCard } from "@/app/components/UserCard";
-import { UserDetailsUI } from "@/app/components/UserDetailsUI";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -43,10 +42,10 @@ export default function UserDetails() {
       fetchUserDetails(userId);
     }
   }, [userId]);
+  
+  if (!userDetails) {
+    return <h1>...loading User Details</h1>;
+  }
 
-  return !!userDetails ? (
-    <UserCard user={userDetails} />
-  ) : (
-    <UserDetailsUI user={userDetails} />
-  );
+  return <UserCard user={userDetails} />;
 }

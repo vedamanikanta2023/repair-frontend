@@ -31,7 +31,7 @@ const reducer = (
   }
 };
 
-export const UserDetailsUI: React.FC = () => {
+export const UpdateUserDetails: React.FC = () => {
   const [userDetails, dispatch] = useReducer(reducer, initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);

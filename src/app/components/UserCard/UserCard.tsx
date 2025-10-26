@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import React from "react";
 
 // TypeScript version of UserCard component using Tailwind CSS
@@ -20,6 +21,7 @@ interface UserCardProps {
 }
 
 export const UserCard: React.FC<UserCardProps> = ({ user}) => {
+  const router = useRouter();
   const formatDate = (iso: string): string => {
     try {
       const d = new Date(iso);
@@ -35,6 +37,10 @@ export const UserCard: React.FC<UserCardProps> = ({ user}) => {
     } catch (e) {
     }
   };
+  
+  const editUserDetails=()=>{
+    router.push("/updateuserdetails")
+  }
 
   return (
     <div className="max-w-xl mx-auto p-4">
@@ -100,7 +106,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user}) => {
           </div>
 
           <div className="mt-6 flex gap-3">
-            <button className="px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:opacity-95">
+            <button onClick={editUserDetails} className="px-4 py-2 rounded-xl bg-indigo-600 text-white font-medium hover:opacity-95">
               Edit
             </button>
             <button className="px-4 py-2 rounded-xl bg-red-50 text-red-600 border border-red-100 hover:bg-red-100">
