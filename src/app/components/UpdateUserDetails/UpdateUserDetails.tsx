@@ -46,6 +46,12 @@ export const UpdateUserDetails: React.FC = () => {
   const searchParams = useSearchParams();
   const isEdit = searchParams.get("edit");
 
+  const createUpdateUserDetials = async () => {
+    try {
+      // call post user details api
+    } catch (error) {}
+  };
+
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -77,7 +83,7 @@ export const UpdateUserDetails: React.FC = () => {
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      alert("Form submitted successfully!");
+      createUpdateUserDetials();
       dispatch({ type: RESET });
       setIsSubmitted(false);
     }
