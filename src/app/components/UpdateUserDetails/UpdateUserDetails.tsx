@@ -45,7 +45,6 @@ export const UpdateUserDetails: React.FC = () => {
 
   const searchParams = useSearchParams();
   const isEdit = searchParams.get("edit");
-  console.log("ljkasf", isEdit);
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
