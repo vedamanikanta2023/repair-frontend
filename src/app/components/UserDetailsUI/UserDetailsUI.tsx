@@ -1,21 +1,6 @@
 "use client";
 import { ChangeEvent, useEffect, useReducer, useRef, useState } from "react";
 
-interface User {
-  id: number;
-  name: string;
-  age: number;
-  phoneNumber: string;
-  gender: string;
-  address: string;
-  userId: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface UserCardProps {
-  user?: User;
-}
 const INPUT_CHANGE = "INPUT_CHANGE";
 const RESET = "RESET";
 
@@ -46,7 +31,7 @@ const reducer = (
   }
 };
 
-export const UserDetailsUI: React.FC<UserCardProps> = ({ user }) => {
+export const UserDetailsUI: React.FC = () => {
   const [userDetails, dispatch] = useReducer(reducer, initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -87,12 +72,6 @@ export const UserDetailsUI: React.FC<UserCardProps> = ({ user }) => {
       setIsSubmitted(false);
     }
   };
-
-  useEffect(() => {
-    if (!!user) {
-      dispatch({ type: "EDIT", payload: user });
-    }
-  }, []);
 
   return (
     <form
