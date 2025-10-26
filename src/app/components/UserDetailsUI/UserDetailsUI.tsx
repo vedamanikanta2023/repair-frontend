@@ -40,13 +40,13 @@ const reducer = (
       }
       return state;
     case "EDIT":
-      return {...action.payload}
+      return { ...action.payload };
     default:
       return state;
   }
 };
 
-export const UserDetailsUI: React.FC<UserCardProps>=({user}) =>{
+export const UserDetailsUI: React.FC<UserCardProps> = ({ user }) => {
   const [userDetails, dispatch] = useReducer(reducer, initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -88,11 +88,11 @@ export const UserDetailsUI: React.FC<UserCardProps>=({user}) =>{
     }
   };
 
-  useEffect(()=>{
-if(!!user){
-  dispatch({"type":"EDIT",payload:user});
-}
-  },[]);
+  useEffect(() => {
+    if (!!user) {
+      dispatch({ type: "EDIT", payload: user });
+    }
+  }, []);
 
   return (
     <form
@@ -212,4 +212,4 @@ if(!!user){
       </button>
     </form>
   );
-}
+};
