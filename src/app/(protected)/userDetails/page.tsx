@@ -6,13 +6,12 @@ import { useEffect, useState } from "react";
 
 export default function UserDetails() {
   const { data: session, status } = useSession();
-  const [userDetails, setUserDetails] = useState(null);
 
   const userId = session?.user.id || "";
   const {data, error, isLoading} = useGetUserDetailsQuery(userId,{
     skip:!userId,
   });
-    
+
   if (isLoading&&!!!data) {
     return <h1>...loading User Details</h1>;
   }
