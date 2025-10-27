@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 export default function UserDetails() {
   const { data: session, status } = useSession();
 
-  const userId = session?.user.id || "";
+  const userId = session?.id || "";
+  
   const {data, error, isLoading} = useGetUserDetailsQuery(userId,{
     skip:!userId,
   });

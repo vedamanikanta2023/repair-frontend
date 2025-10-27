@@ -1,4 +1,5 @@
 "use client";
+import { useGetUserDetailsQuery } from "@/services/app";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useReducer, useRef, useState } from "react";
@@ -41,17 +42,20 @@ export const UpdateUserDetails: React.FC = () => {
 
   const { data: session, status } = useSession();
 
-  const userId = session?.user.id || "";
+  const userId = session?.id || "";
+
+  const { data, error, isLoading } = useGetUserDetailsQuery(userId, {
+    skip: !userId,
+  });
 
   const searchParams = useSearchParams();
   const isEdit = searchParams.get("edit");
 
   const createUpdateUserDetials = async () => {
     try {
-  
-  } catch (error) {
-    console.error("Error saving user details:", error);
-  }
+    } catch (error) {
+      console.error("Error saving user details:", error);
+    }
   };
 
   const handleOnChange = (
@@ -91,40 +95,11 @@ export const UpdateUserDetails: React.FC = () => {
     }
   };
 
-  const fetchUserDetails = async (id: string) => {
-    try {
-      const response = await fetch(
-        `http://10.80.221.14:5000/userdetails/${id}`,
-        { cache: "no-store" } // optional, ensures fresh data
-      );
-
-      if (!response.ok) {
-        // if API sends 404 or any non-200
-        console.warn(`User not found, status: ${response.status}`);
-        // router.push("/userDetails");
-        return;
-      }
-
-      const data = await response.json();
-
-      if (!data || Object.keys(data).length === 0) {
-        // handles case when response is empty
-        console.warn("User details are empty");
-        return;
-      }
-
-      dispatch({ type: EDIT, payload: data });
-      return data;
-    } catch (error) {
-      console.error("Error fetching user details:", error);
-    }
-  };
-
   useEffect(() => {
-    if (isEdit) {
-      fetchUserDetails(userId);
+    if (isEdit && data) {
+      dispatch({ type: EDIT, payload: data });
     }
-  }, [userId]);
+  }, [data]);
 
   return (
     <form

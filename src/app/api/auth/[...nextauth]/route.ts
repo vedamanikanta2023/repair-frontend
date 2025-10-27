@@ -58,12 +58,12 @@ const handler = NextAuth({
     async session(data) {
       const { session, token } = data
 
-      if (session.user) {
-        session.user.id = token.id;
-        session.user.username = token.username;
-        session.user.accessToken = token.accessToken; // 👈 available in frontend
-      }
-      return session;
+      // if (session.user) {
+      //   session.user.id = token.id;
+      //   session.user.username = token.username;
+      //   session.user.accessToken = token.accessToken; // 👈 available in frontend
+      // }
+      return {...session,...token};
     },
   },
 });
