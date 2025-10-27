@@ -48,26 +48,7 @@ export const UpdateUserDetails: React.FC = () => {
 
   const createUpdateUserDetials = async () => {
     try {
-    const url = isUpdate
-      ? `${BASE_URL}/api/userdetails/${user.id}` // PUT for update
-      : `${BASE_URL}/api/userdetails`; // POST for create
-
-    const method = isUpdate ? "PUT" : "POST";
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    console.log(`${isUpdate ? "Updated" : "Created"} user details:`, result);
+  
   } catch (error) {
     console.error("Error saving user details:", error);
   }
