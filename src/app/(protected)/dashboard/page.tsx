@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetUserDetailsQuery } from "@/services/app";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
@@ -9,45 +10,30 @@ export const UserContext: any = createContext(null);
 export default function Dashboard() {
   const { data: session, status } = useSession();
 
+  const userId = session?.id || "";
+  const {
+    data: userDetails,
+    error,
+    isLoading,
+  } = useGetUserDetailsQuery(userId, {
+    skip: !userId,
+  });
   const router = useRouter();
 
-  const userId = session?.user.id || "";
-
-  const fetchUserDetails = async (id: string) => {
+  const handleUserDetais = async () => {
     try {
-      const response = await fetch(
-        `${process.env.DOMAIN}/userdetails/${id}`,
-        { cache: "no-store" } // optional, ensures fresh data
-      );
-
-      if (!response.ok) {
-        // if API sends 404 or any non-200
-        console.warn(`User not found, status: ${response.status}`);
-        router.push("/userdetails");
+      if (error) {
+        router.push("/updateuserdetails");
         return;
       }
-
-      const data = await response.json();
-
-      if (!data || Object.keys(data).length === 0) {
-        // handles case when response is empty
-        console.warn("User details are empty");
-        router.push("/userdetails");
-        return;
-      }
-
-      return data;
     } catch (error) {
       console.error("Error fetching user details:", error);
-      router.push("/userdetails");
     }
   };
 
   useEffect(() => {
-    if (userId) {
-      fetchUserDetails(userId);
-    }
-  }, [userId]);
+      handleUserDetais();
+  }, [userDetails,error]);
 
   useEffect(() => {
     if (status === "unauthenticated") {
