@@ -11,7 +11,7 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         // calling the backend API for login
-        const res = await fetch(`${process.env.DOMAIN}/login`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_DOMAIN}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -61,8 +61,8 @@ const handler = NextAuth({
       if (session.user) {
         session.user.id = token.id;
         session.user.username = token.username;
+        session.user.accessToken = token.accessToken; // 👈 available in frontend
       }
-      session.accessToken = token.accessToken; // 👈 available in frontend
       return session;
     },
   },
