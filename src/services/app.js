@@ -23,7 +23,7 @@ export const apiSlice = createApi({
       query: () => '/',
     }),
     getUserDetails: builder.query({
-      query: (id) => '/userdetails/'+String(id),
+      query: (id) => `/userdetails/${id}`,
     }),
     // addPost: builder.mutation({
     //   query: (newPost) => ({
