@@ -5,6 +5,7 @@ import { capitalizeFirstLetter } from "@/utils/utils";
 import { UserDetailsType } from "@/types";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 const url =
   "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
@@ -43,12 +44,11 @@ export function ProfileUI(props: { userDetails: UserDetailsType }) {
               {capitalizeFirstLetter(userDetails.role)}
             </p>
             <button
-              // onClick={handleLogout}
+              onClick={() => signOut({ callbackUrl: "/login" })}
               className="p-1 rounded-md hover:bg-stone-400 transition"
               title="Logout"
             >
               <LogOut size={16} />{" "}
-              {/* Or replace with emoji → <span>🚪</span> */}
             </button>
           </div>
           <p className="text-lg font-semibold text-stone-50">
