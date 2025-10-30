@@ -3,12 +3,14 @@ import * as React from "react";
 import Image from "next/image";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import { UserDetailsType } from "@/types";
+import { useRouter } from "next/navigation";
 
 const url = "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
 
 export function ProfileUI(props: { userDetails: UserDetailsType }) {
   const { userDetails } = props;
   const [showUserDetails, setUserDetails] = React.useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -16,6 +18,7 @@ export function ProfileUI(props: { userDetails: UserDetailsType }) {
         <Image
           onMouseOver={() => setUserDetails(true)}
           onMouseLeave={() => setUserDetails(false)}
+          onClick={()=>router.push("/userdetails")}
           src={url}
           alt="User Profile Picture"
           width={64}
