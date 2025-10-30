@@ -20,7 +20,7 @@ export  function Login() {
     });
 
     if (!result?.error) {
-      router.push("/dashboard"); // redirect after login
+      router.push("/"); // redirect after login
     } else {
       alert("Invalid credentials");
     }
