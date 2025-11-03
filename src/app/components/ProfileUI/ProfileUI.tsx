@@ -7,10 +7,9 @@ import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 
-const url =
-  "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
+const url = "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
 
-let timeout:NodeJS.Timeout;
+let timeout: NodeJS.Timeout;
 
 export function ProfileUI(props: { userDetails: UserDetailsType }) {
   const { userDetails } = props;
@@ -18,7 +17,7 @@ export function ProfileUI(props: { userDetails: UserDetailsType }) {
   const router = useRouter();
 
   const onMouseLeave = () => {
-     timeout=setTimeout(() => {
+    timeout = setTimeout(() => {
       setUserDetails(false);
     }, 1000);
   };
@@ -38,7 +37,11 @@ export function ProfileUI(props: { userDetails: UserDetailsType }) {
         />
       </div>
       {showUserDetails && userDetails && (
-        <div onMouseEnter={()=>clearTimeout(timeout)} onMouseLeave={()=> setUserDetails(false)} className="flex flex-col items-start justify-center rounded-lg p-2 gap-1 text-stone-50 bg-stone-500 fixed right-6 top-20">
+        <div
+          onMouseEnter={() => clearTimeout(timeout)}
+          onMouseLeave={() => setUserDetails(false)}
+          className="flex flex-col items-start justify-center rounded-lg p-2 gap-1 text-stone-50 bg-stone-500 fixed right-6 top-20"
+        >
           <div className="flex items-center justify-between w-full">
             <p className="text-sm font-medium tracking-wide">
               {capitalizeFirstLetter(userDetails.role)}
