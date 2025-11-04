@@ -1,6 +1,6 @@
 "use client"
-import { Login } from "@/app/components/Login";
-import { Regester } from "@/app/components/Regester";
+import { Login } from "@/components/Login";
+import { Regester } from "@/components/Regester";
 import { useState } from "react";
 
 
