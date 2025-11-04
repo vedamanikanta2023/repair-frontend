@@ -1,7 +1,7 @@
+import { Profile } from "@/components/Profile";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
-import { Profile } from "../components/Profile";
 // import { SessionProvider } from "next-auth/react";
 
 export const metadata = {

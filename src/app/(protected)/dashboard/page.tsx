@@ -3,9 +3,8 @@
 import { useGetUserDetailsQuery } from "@/services/app";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 
-export const UserContext: any = createContext(null);
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -14,7 +13,6 @@ export default function Dashboard() {
   const {
     data: userDetails,
     error,
-    isLoading,
   } = useGetUserDetailsQuery(userId, {
     skip: !userId,
   });
@@ -44,7 +42,6 @@ export default function Dashboard() {
   if (status === "loading") return <p>Loading...</p>;
 
   return (
-    <UserContext.Provider value={session}>
       <div className="p-6">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         {/* <p className="mt-2">Welcome, {session?.user?.username} 🎉</p> */}
@@ -56,6 +53,5 @@ export default function Dashboard() {
         </button>
         <button>Do Request</button>
       </div>
-    </UserContext.Provider>
   );
 }

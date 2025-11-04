@@ -1,4 +1,4 @@
-import { UpdateUserDetails } from "@/app/components/UpdateUserDetails";
+import { UpdateUserDetails } from "@/components/UpdateUserDetails";
 
 export default function UpdateUserDetailsPage() {
     return<UpdateUserDetails />
