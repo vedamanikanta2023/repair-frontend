@@ -8,8 +8,8 @@ export const apiSlice = createApi({
     prepareHeaders: async(headers, { getState }) => {
       const session = await getSession()  // fetches active session from NextAuth
 
-      if (session.accessToken) {
-        headers.set('authorization', `Bearer ${session.accessToken}`);
+      if (session.user.accessToken) {
+        headers.set('authorization', `Bearer ${session.user.accessToken}`);
       }
       return headers;
     },

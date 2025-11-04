@@ -2,12 +2,10 @@
 import { UserCard } from "@/components/UserCard";
 import { useGetUserDetailsQuery } from "@/services/app";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 
 export default function UserDetails() {
   const { data: session, status } = useSession();
-  console.log(session,status);
-  const userId = session?.id || "";
+  const userId = session?.user?.id || "";
   
   const {data, isLoading} = useGetUserDetailsQuery(userId,{
     skip:!userId,

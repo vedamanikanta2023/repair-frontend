@@ -42,28 +42,24 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET, // add in .env.local
 
   callbacks: {
-    // 1. Add token to JWT
-    async jwt(data) {
-      const { token, user }=data;
-      
+    // 1️⃣ — Attach user info to the token
+    async jwt({ token, user }) {
       if (user) {
-        token.accessToken = user.token; // store backend JWT
         token.id = user.id;
         token.username = user.username;
+        token.accessToken = user.token; // store backend token
       }
       return token;
     },
 
-    // 2. Make token available in session
-    async session(data) {
-      const { session, token } = data
-
-      // if (session.user) {
-      //   session.user.id = token.id;
-      //   session.user.username = token.username;
-      //   session.user.accessToken = token.accessToken; // 👈 available in frontend
-      // }
-      return {...session,...token};
+    // 2️⃣ — Expose token data via session
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.username = token.username;
+        session.user.accessToken = token.accessToken;
+      }
+      return session;
     },
   },
 });
