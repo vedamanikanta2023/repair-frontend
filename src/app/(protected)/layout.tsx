@@ -1,8 +1,4 @@
-import { Profile } from "@/components/Profile";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Image from "next/image";
-// import { SessionProvider } from "next-auth/react";
+import { Navbar } from "@/components/Navbar/Navbar";
 
 export const metadata = {
   title: "VRepair",
@@ -19,8 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <div>
-      <div className="flex justify-end items-center">
-        <Profile/>
+      <div className="flex justify-end items-center sticky top-0 z-50">
+        <Navbar />
       </div>
       {children}
     </div>
