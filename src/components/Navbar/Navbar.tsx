@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Profile } from "../Profile";
+import Image from "next/image";
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -13,11 +14,19 @@ export const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-gray-800 text-white shadow-md w-dvw">
-      <div className="container mx-auto px-6 py-3 flex items-center justify-between mr-16">
-        <h1 className="text-xl font-semibold tracking-wide">MyApp</h1>
+    <nav className="bg-gray-800 text-white shadow-md sticky top-0 z-50 w-full py-1 px-2 flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <Image
+            title="Rpair"
+            src="https://res.cloudinary.com/dnlvhtiio/image/upload/v1762361217/Rpair_bcwf3g.jpg"
+            alt="Rpair Logo"
+            width={120}
+            height={40}
+            className="object-contain rounded-md"
+          />
+        </div>
 
-        <ul className="flex space-x-6">
+        <ul className="flex space-x-6 items-center">
           {links.map((link) => (
             <li key={link.href}>
               <Link
@@ -30,9 +39,9 @@ export const Navbar = () => {
               </Link>
             </li>
           ))}
+
+        <Profile />
         </ul>
-      </div>
-      <Profile />
     </nav>
   );
 };

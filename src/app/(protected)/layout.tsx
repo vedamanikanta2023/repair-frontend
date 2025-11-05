@@ -14,11 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <div className="flex justify-end items-center sticky top-0 z-50">
+    <>
         <Navbar />
-      </div>
       {children}
-    </div>
+    </>
   );
 }
