@@ -9,8 +9,6 @@ export const Navbar = () => {
 
   const links = [
     { name: "Home", href: "/" },
-    { name: "Dashboard", href: "/dashboard" },
-    { name: "Profile", href: "/profile" },
   ];
 
   return (
