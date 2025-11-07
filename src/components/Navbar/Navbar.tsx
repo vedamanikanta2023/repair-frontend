@@ -1,8 +1,8 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Profile } from "../Profile";
 import Image from "next/image";
+import { ProfileUI } from "../ProfileUI/ProfileUI";
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -38,7 +38,7 @@ export const Navbar = () => {
             </li>
           ))}
 
-        <Profile />
+        <ProfileUI />
         </ul>
     </nav>
   );

@@ -1,4 +1,3 @@
-"use client";
 import { UserCard } from "@/components/UserCard";
 import { useGetUserDetailsQuery } from "@/services/app";
 import { useSession } from "next-auth/react";

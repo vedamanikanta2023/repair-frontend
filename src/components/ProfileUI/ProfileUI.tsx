@@ -5,15 +5,21 @@ import { capitalizeFirstLetter } from "@/utils/utils";
 import { UserDetailsType } from "@/types";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import { useGetUserDataQuery } from "@/services/app";
 
 const url = "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
 
 let timeout: NodeJS.Timeout;
 
-export function ProfileUI(props: { userDetails: UserDetailsType }) {
-  const { userDetails } = props;
+export function ProfileUI() {
+  const { data: session, status } = useSession();
+    const userId = session?.user?.id || "";
+  const {data:userDetails} = useGetUserDataQuery(userId,{
+    skip:!!!userId
+  });
   const [showUserDetails, setUserDetails] = React.useState(false);
+
   const router = useRouter();
 
   const onMouseLeave = () => {
@@ -22,6 +28,8 @@ export function ProfileUI(props: { userDetails: UserDetailsType }) {
     }, 1000);
   };
 
+
+  
   return (
     <>
       <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300 shadow-md">

@@ -21,7 +21,10 @@ export const apiSlice = createApi({
     getUserDetails: builder.query({
       query: (id) => `/userdetails/${id}`,
     }),
+    getUserData: builder.query({
+      query: (id) => `/user/${id}`,
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetUserDetailsQuery } = apiSlice;
+export const { useGetPostsQuery, useGetUserDetailsQuery,useGetUserDataQuery } = apiSlice;
