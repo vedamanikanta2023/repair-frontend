@@ -7,19 +7,27 @@ import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useGetUserDataQuery } from "@/services/app";
-
-const url = "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
+import { sampleProfilePic } from "@/utils/constants";
 
 let timeout: NodeJS.Timeout;
 
 export function ProfileUI() {
-  const { data: session, status } = useSession();
-    const userId = session?.user?.id || "";
-  const {data:userDetails} = useGetUserDataQuery(userId,{
-    skip:!!!userId
-  });
   const [showUserDetails, setUserDetails] = React.useState(false);
 
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id || "";
+
+  const { data: userDetails } = useGetUserDataQuery(userId, {
+    skip: !!!userId,
+  });
+// const userDetails={
+//     "id": 6,
+//     "username": "vedamanikanta",
+//     "email": "vedamanikanta.dali@gmail.com",
+//     "role": "user",
+//     "createdAt": "2025-10-16T18:19:51.000Z",
+//     "updatedAt": "2025-10-16T18:19:51.000Z"
+// }
   const router = useRouter();
 
   const onMouseLeave = () => {
@@ -28,8 +36,6 @@ export function ProfileUI() {
     }, 1000);
   };
 
-
-  
   return (
     <>
       <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-300 shadow-md">
@@ -37,7 +43,7 @@ export function ProfileUI() {
           onMouseOver={() => setUserDetails(true)}
           onMouseLeave={onMouseLeave}
           onClick={() => router.push("/userdetails")}
-          src={url}
+          src={sampleProfilePic}
           alt="User Profile Picture"
           width={64}
           height={64}

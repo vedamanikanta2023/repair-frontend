@@ -1,0 +1,1 @@
+export const sampleProfilePic = "https://res.cloudinary.com/dnlvhtiio/image/upload/v1760979082/main-sample.png";
