@@ -8,23 +8,23 @@ import { useState } from "react";
 
 export const Navbar = () => {
   const pathname = usePathname();
-  const [theme,setTheme]=useState("light");
+  const [theme, setTheme] = useState("light");
   const links = [
     { name: "Home", href: "/" },
     { name: "User Details", href: "/userdetails" },
   ];
 
-  const handleThemeChange = ()=>{
-    const newTheme = theme==="dark"?"light":"dark";
+  const handleThemeChange = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-  }
+  };
 
   return (
     <nav className="bg-yellow-900 text-white shadow-md sticky top-0 z-50 w-full py-1 px-2 flex items-center justify-between">
       <div className="flex items-center space-x-3">
         <Image
           title="Rpair"
-          src={ theme === "dark" ? appLogoDark : appLogoLight}
+          src={theme === "dark" ? appLogoDark : appLogoLight}
           alt="Rpair Logo"
           width={120}
           height={40}
